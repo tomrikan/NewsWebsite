@@ -45,12 +45,16 @@ public class NewsController {
 
     @PostMapping("/management/news")
     public String addNewsItem(@RequestParam String headline, String lead, String text) {
-        NewsItem ni = new NewsItem();
-        ni.setHeadline(headline);
-        ni.setLead(lead);
-        ni.setText(text);
 
-        newsRep.save(ni);
+        if (!headline.isEmpty() && headline.length() > 3
+                && !lead.isEmpty() && !text.isEmpty()) {
+            NewsItem ni = new NewsItem();
+            ni.setHeadline(headline);
+            ni.setLead(lead);
+            ni.setText(text);
+
+            newsRep.save(ni);
+        }
 
         return "redirect:/management/news";
     }
@@ -66,7 +70,7 @@ public class NewsController {
         model.addAttribute("writers", newsRep.getOne(newsId).getWriters());
         return "newsitem";
     }
-    
+
     @GetMapping(path = "/news/{newsId}/pic", produces = "image/*")
     @ResponseBody
     public byte[] showPic(@PathVariable Long newsId) {
@@ -76,10 +80,13 @@ public class NewsController {
     @PostMapping("/management/news/{newsId}")
     public String savePic(@PathVariable Long newsId, @RequestParam("file") MultipartFile file) throws IOException {
 
-        NewsItem ni = newsRep.getOne(newsId);
-        ni.setPic(file.getBytes());
+        if (file != null) {
 
-        newsRep.save(ni);
+            NewsItem ni = newsRep.getOne(newsId);
+            ni.setPic(file.getBytes());
+
+            newsRep.save(ni);
+        }
 
         return "redirect:/management/news";
     }

@@ -24,44 +24,47 @@ import wad.repository.WriterRepository;
  */
 @Controller
 public class WriterController {
-    
+
     @Autowired
     private WriterRepository writerRep;
     @Autowired
     private NewsRepository newsRep;
-    
+
     @GetMapping("/management/writers")
     public String writers(Model model) {
         model.addAttribute("writers", writerRep.findAll());
         model.addAttribute("news", newsRep.findAll());
         return "writers";
     }
-    
+
     @PostMapping("/management/writers")
     public String addWriter(@RequestParam String name) {
-        if (writerRep.findByName(name) == null) {
-            Writer w = new Writer();
-            w.setName(name);
 
-            writerRep.save(w);
+        if (!name.isEmpty() && name.length() > 2) {
+            if (writerRep.findByName(name) == null) {
+                Writer w = new Writer();
+                w.setName(name);
+
+                writerRep.save(w);
+            }
         }
         return "redirect:/management/writers";
     }
-    
+
     @PostMapping("/management/writers/{writerId}")
     public String addNews(@PathVariable Long writerId, @RequestParam Long newsitemId) {
         Writer w = writerRep.getOne(writerId);
         NewsItem ni = newsRep.getOne(newsitemId);
-        
+
         w.getWrittenNews().add(ni);
         ni.getWriters().add(w);
-        
+
         writerRep.save(w);
         newsRep.save(ni);
-        
+
         return "redirect:/management/writers";
     }
-    
+
     @DeleteMapping("/management/writers/{writerId}")
     public String remove(Model model, @PathVariable Long writerId) {
         writerRep.deleteById(writerId);

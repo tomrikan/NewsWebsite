@@ -24,53 +24,57 @@ import wad.repository.NewsRepository;
  */
 @Controller
 public class CategoryController {
-    
+
     @Autowired
     private CategoryRepository catRep;
     @Autowired
     private NewsRepository newsRep;
-    
+
     @GetMapping("/management/categories")
     public String categories(Model model) {
         model.addAttribute("categories", catRep.findAll());
         model.addAttribute("news", newsRep.findAll());
         return "categories";
     }
-    
+
     @GetMapping("/category/{categoryId}")
     public String category(Model model, @PathVariable Long categoryId) {
         Category category = catRep.getOne(categoryId);
         model.addAttribute("category", category);
         model.addAttribute("news", category.getNews());
-        
+
         return "category";
     }
-    
+
     @PostMapping("/management/categories")
     public String addCategory(@RequestParam String name) {
-        if (catRep.findByName(name) == null) {
-            Category c = new Category();
-            c.setName(name);
-            
-            catRep.save(c);
+
+        if (!name.isEmpty() && name.length() > 2) {
+
+            if (catRep.findByName(name) == null) {
+                Category c = new Category();
+                c.setName(name);
+
+                catRep.save(c);
+            }
         }
         return "redirect:/management/categories";
     }
-    
+
     @PostMapping("/management/categories/{categoryId}")
-    public String addNews(@PathVariable Long categoryId, @RequestParam Long newsitemId) {
+    public String addNewsItemToCategory(@PathVariable Long categoryId, @RequestParam Long newsitemId) {
         Category c = catRep.getOne(categoryId);
         NewsItem ni = newsRep.getOne(newsitemId);
-        
+
         c.getNews().add(ni);
         ni.getCategories().add(c);
-        
+
         catRep.save(c);
         newsRep.save(ni);
-        
+
         return "redirect:/management/categories";
     }
-    
+
     @DeleteMapping("/management/categories/{categoryId}")
     public String remove(Model model, @PathVariable Long categoryId) {
         catRep.deleteById(categoryId);
