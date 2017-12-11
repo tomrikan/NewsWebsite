@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>Writers management</title>
+    </head>
+    <body>
+        
+        <h2>Writers</h2>
+        <ul>
+            <li th:each="writer : ${writers}">
+                <h3 th:text="${writer.name}"> writer</h3>
+                <form th:action="@{/management/writers/{writerId}(writerId=${writer.id})}" th:method="DELETE">
+                    <input type="submit" value="Remove"/>
+                </form>
+                <h4> Assign news-item </h4>
+                <form method="POST" th:action="@{/management/writers/{writerId}(writerId=${writer.id})}">
+                    <select name="newsitemId">
+                        <option th:each="newsitem : ${news}" th:value="${newsitem.id}" th:text="${newsitem.headline}">newsitem</option>
+                    </select>
+                    <input type="submit" value="Assign" id="add-to-writer"/>
+                </form>
+            </li>
+        </ul>
+        
+        <h4>Add new writer</h4>
+        
+        <div>
+            Enter info and press Submit:<br/>
+            <form action="/management/writers" method="POST">
+                Name: <input type="text" name="name" id="name"/><br/>
+                <input type="submit" value="Submit"/>            
+            </form>
+        </div>
+        <a href="/management">Management panel</a><br/>
+    </body>
+</html>

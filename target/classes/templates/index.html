@@ -1,12 +1,38 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    
+
     <head>
         <meta charset="UTF-8" />
         <title>News Front Page</title>
     </head>
-    
+
     <body>
-        <h2> News</h2>
+
+
+        <ul>
+            <li th:each="category : ${categories}">
+                <a  th:href="@{/category/{categoryId}(categoryId=${category.id})}" th:text="${category.name}"> category</a>
+            </li>
+        </ul>
+
+
+
+        <h1> Latest news </h1>
+
+        <ol>
+            <li th:each="newsitem : ${news}">
+                <h2><a th:href="@{/news/{newsId}(newsId=${newsitem.id})}" th:text="${newsitem.headline}"> headline</a></h2>
+                <img src="@{/pic(newsId=${newsitem.id})}" alt="Pic for the news-item"/><br/>
+                <a th:text="${newsitem.lead}">lead paragraph</a><br/>
+
+            </li>
+        </ol>
+        
+        <a href="/mostviewed"> Most viewed</a><br/>
+        
+        <a href="/pubtime"> Show by publication time</a><br/>
+
+        <a href="/management">News management</a><br/>
+
     </body>
 </html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>By publication time</title>
+    </head>
+    <body>
+        <ol>
+            <li th:each="newsitem : ${news}">
+                <a th:href="@{/news/{newsId}(newsId=${newsitem.id})}" th:text="${newsitem.headline}"> headline</a>
+                <span th:href="@{/news/{newsId}(newsId=${newsitem.id})}" th:text="${newsitem.pubDate}"> pubDate</span>
+            </li>
+        </ol>
+        
+        <a href="/">Home</a><br/>
+    </body>
+</html>

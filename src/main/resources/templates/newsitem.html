@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title th:text="${newsitem.headline}">JCVD </title>
+    </head>
+    <body>
+        
+        <ul>
+            <li th:each="category : ${categories}">
+                <a  th:href="@{/category/{categoryId}(categoryId=${category.id})}" th:text="${category.name}"> category</a>
+            </li>
+        </ul>
+        
+        
+        <h1 th:text="${newsitem.headline}"> Headline </h1><br/>
+        <img src="@{/news/{newsId}/pic(newsId=${newsitem.id})}" alt="Pic for the news-item"/><br/>
+        <a th:text="${newsitem.text}"> Text </a><br/>
+        
+        
+        <a> Written by: </a>
+        <ul>
+            <li th:each="writer: ${writers}">
+                <a th:text="${writer.name}"> writer </a>
+            </li>
+        </ul>
+        <a th:text="${newsitem.pubTime}"> published </a><br/>
+        <a href="/">Home</a><br/>
+    </body>
+</html>

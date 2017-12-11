@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>News management</title>
+    </head>
+    <body>
+
+        <h2>News</h2>
+        <ul>
+            <li th:each="newsitem : ${news}">
+                <span th:text="${newsitem.headline}"> headline</span>
+                <form th:action="@{/management/news/{newsitemId}(newsitemId=${newsitem.id})}" th:method="DELETE">
+                    <input type="submit" value="Remove"/>
+                </form><br/>
+                <form method="POST" th:action="@{/management/news/{newsitemId}(newsitemId=${newsitem.id})}" enctype="multipart/form-data">
+            <input type="file" name="file" id="file"/>
+            <input type="submit" value="Add!"/>
+        </form>
+            </li>
+        </ul>
+
+
+        <h2>Add new newsitem</h2>
+
+        <div>
+            Enter info and press Submit:<br/>
+            <form action="/management/news" method="POST">
+                Headline: <input type="text" name="headline" id="headline"/><br/>
+                Lead: <input type="text" name="lead" id="lead"/><br/>
+                Text: <input type="text" name="text" id="text"/><br/>
+                <input type="submit" value="Submit"/>            
+            </form>
+        </div>
+
+        <a href="/management">Management panel</a><br/>
+    </body>
+</html>

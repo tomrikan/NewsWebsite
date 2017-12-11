@@ -1,1 +1,6 @@
+wad/domain/NewsItem.class
+wad/domain/Category.class
+wad/controller/NewsController.class
+wad/domain/Writer.class
 wad/NewsWebsiteApplication.class
+wad/repository/NewsRepository.class

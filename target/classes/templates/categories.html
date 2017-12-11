@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>Categories management</title>
+    </head>
+    <body>
+        <h2>Categories</h2>
+        <ul>
+            <li th:each="category : ${categories}">
+                <h3 th:text="${category.name}"> category</h3>
+                <form th:action="@{/management/categories/{categoryId}(categoryId=${category.id})}" th:method="DELETE">
+                    <input type="submit" value="Remove"/>
+                </form>
+                <h4> Assign news-item </h4>
+                <form method="POST" th:action="@{/management/categories/{categoryId}(categoryId=${category.id})}">
+                    <select name="newsitemId">
+                        <option th:each="newsitem : ${news}" th:value="${newsitem.id}" th:text="${newsitem.headline}">newsitem</option>
+                    </select>
+                    <input type="submit" value="Assign" id="add-to-cats"/>
+                </form>
+            </li>
+        </ul>
+        
+        <h4>Add new category</h4>
+        
+        <div>
+            Enter info and press Submit:<br/>
+            <form action="/management/categories" method="POST">
+                Name: <input type="text" name="name" id="name"/><br/>
+                <input type="submit" value="Submit"/>            
+            </form>
+        </div>
+        <a href="/management">Management panel</a><br/>
+    </body>
+</html>
